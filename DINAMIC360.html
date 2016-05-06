@@ -1,0 +1,188 @@
+<!doctype html>
+
+<html lang=''>
+<head>
+
+<meta charset='utf-8'>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>DINAMIC 360</title>
+
+<script type="text/javascript" src="scripts/jquery-1.11.1.min.js"></script>
+   
+   
+<style type="text/css">
+
+html, body 
+  {
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+  border: 0;
+  overflow: hidden; /*  Disable scrollbars */
+  display: block;  /* No floating content on sides */
+  }
+
+textarea 
+        {
+        font-family: Consolas; font-size: 8pt;
+        }
+
+    .status_text 
+        {
+        background-color: #000; color:#0F0
+        }
+        
+dialog {
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+}
+
+</style>
+  
+</head>
+
+
+<body>
+
+<dialog>
+  <p>This is da dialog!</p>
+    <form method="dialog">
+    <p>Do you agree with terms of use?</p>
+    <textarea class="form-control" disabled>Lorem ipsum dolor sit amet,....</textarea>
+    <button type="submit" value="yes">Yes</button>
+    <button type="submit" value="no" autofocus>No</button>
+  </form>
+  <button id="close">Close</button>
+</dialog>
+
+
+<p id='status_text' class='status_text'/>
+ 
+<h3>DINAMIC 360</h3>
+
+<input type='button' onclick='play_simulation()'        value='Play' />
+<input type='button' onclick='stop_simulation()'        value='Pause' />
+<input type='button' onclick='add_point()'              value='Ad Point' />
+<input type='button' onclick='add_fixed_point()'        value='Ad Fixed Point'/>
+<input type='button' onclick='add_constrain()'          value='Ad Constrain'/>
+<input type='button' onclick='add_engine()'             value='Ad Engine'/>
+<input type='button' onclick='add_traza() '              value='Ad Traza'/>
+<input type='button' onclick='move_object() '           value='Move Object'/>
+
+<input type='button' onclick='show_dialog() '           value='Muestra'/>
+
+<input type='button' onclick="PopUp('help.html','500','400','Popupuno')"  value='Help'/>
+
+<canvas id="canvas" style = 'background-color: #333;'></canvas>
+
+</body>
+
+<html>
+
+<script type="text/javascript" src="scripts/vector.js"></script>
+<script type="text/javascript" src="scripts/dinamic.js"></script>
+<script type="text/javascript" src="scripts/engine.js"></script>
+<script type="text/javascript" src="scripts/point.js"></script>
+<script type="text/javascript" src="scripts/constraint.js"></script>
+<script type="text/javascript" src="scripts/traza.js"></script>
+
+<script type="text/javascript">
+
+
+dx=$(window).width();
+$("#canvas").attr("width", dx);
+
+dy=$(window).height()-50;
+$("#canvas").attr("height", dy);
+
+
+var Mundo = new World;
+
+var canvas  = document.getElementById("canvas");
+var context = canvas.getContext("2d");
+
+var scale   = 1;
+var originx = 0;
+var originy = 0;
+
+init_world  ();
+init_canvas ();
+
+Mundo.run=0;
+
+function play_simulation() 
+    {
+    Mundo.run=1;
+    }
+    
+function stop_simulation() 
+    {
+    Mundo.run=0;
+    }
+
+function add_point() 
+    {
+    Mundo.run=0;
+    Mundo.flag_edit="add_point";
+    }
+    
+function add_fixed_point() 
+    {
+    Mundo.run=0;
+    Mundo.flag_edit="add_fixed_point";
+    }
+    
+function add_traza() 
+    {
+    Mundo.run=0;
+    Mundo.flag_edit="add_traza";
+    }
+    
+function add_constrain() 
+    {
+    Mundo.run=0;
+    Mundo.flag_edit="beg_constraint";
+    }
+
+function add_engine() 
+    {
+    Mundo.run=0;
+    Mundo.flag_edit="beg_engine";
+    }
+
+function move_object() 
+    {
+    Mundo.run=0;
+    Mundo.flag_edit="beg_move";
+    }
+
+function PopUp(pagina,w,h,nombre)
+    {
+    var winleft = (screen.width-w)/2;
+    var wintop = (screen.height-h)/2;
+    caracteristicas='height='+h+',width='+w+',top='+wintop+',left='+winleft+',scrollbars=no,toolbar=no,resizable=yes,location=no'
+    win=window.open(pagina,nombre,caracteristicas)
+    if(parseInt(navigator.appVersion) >= 4){win.window.focus();}
+    }
+    
+function help() 
+    {
+    window.open('help.html',"Top=120,Left=300width=120,height=300,scrollbars=NO") 
+    }
+    
+function show_dialog() 
+    { 
+    var dialog = document.querySelector('dialog');
+    dialog.showModal();
+    };
+
+document.querySelector('#close').onclick = function() 
+    {
+    var dialog = document.querySelector('dialog');
+    dialog.close();
+    };
+
+</script>
